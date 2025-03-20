@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+/**
+ * Menggunakan fungsi useI18n untuk terjemahan
+ */
+const { t } = useI18n()
+
 /**
  * Props untuk komponen EmptyState
  * message: string - Pesan yang akan ditampilkan
@@ -26,7 +33,7 @@ const handleActionClick = () => {
 
 <template>
   <div
-    class="flex flex-col items-center justify-center py-12 px-4 bg-white rounded-lg border border-gray-200"
+    class="flex flex-col items-center justify-center py-12 px-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
   >
     <!-- Ikon ilustrasi -->
     <div class="text-gray-300 mb-4">
@@ -47,13 +54,13 @@ const handleActionClick = () => {
     </div>
 
     <!-- Pesan -->
-    <p class="text-gray-600 text-center mb-4">{{ message }}</p>
+    <p class="text-gray-600 dark:text-gray-300 text-center mb-4">{{ message }}</p>
 
     <!-- Tombol aksi jika action prop tersedia -->
     <button
       v-if="action"
       @click="handleActionClick"
-      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors text-sm"
+      class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors text-sm"
     >
       {{ action }}
     </button>

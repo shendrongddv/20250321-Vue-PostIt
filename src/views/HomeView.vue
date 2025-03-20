@@ -1,121 +1,114 @@
 <script setup lang="ts">
 import EmptyState from '@/components/EmptyState.vue'
 import PostItem from '@/components/PostItem.vue'
-import { POST_FILTER_MODES } from '@/lib/constants'
 import { usePostsStore } from '@/stores/posts'
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 /**
- * Mendapatkan router untuk navigasi
+ * Menggunakan fungsi useI18n untuk terjemahan
  */
-const router = useRouter()
+const { t } = useI18n()
 
 /**
- * Mendapatkan store posts untuk mengakses daftar post
+ * State untuk filter: semua post atau post yang disimpan
+ */
+const showSaved = ref(false)
+
+/**
+ * Mendapatkan data post dari store
  */
 const postsStore = usePostsStore()
 
 /**
- * State untuk filter tampilan post (semua atau yang disimpan)
- * Nilai default: 'all' untuk menampilkan semua post
+ * Mengembalikan post berdasarkan filter yang aktif
+ * Jika showSaved = true, tampilkan post yang disimpan
+ * Jika showSaved = false, tampilkan semua post
  */
-const postFilter = ref(POST_FILTER_MODES.ALL)
-
-/**
- * Computed untuk mengecek apakah tidak ada post yang tersedia untuk ditampilkan
- */
-const noPostsAvailable = computed(() => {
-  return postFilter.value === POST_FILTER_MODES.ALL
-    ? postsStore.sorted.length === 0
-    : postsStore.saved.length === 0
+const posts = computed(() => {
+  if (showSaved.value) {
+    return postsStore.saved
+  }
+  return postsStore.sorted
 })
 
 /**
- * Navigasi ke halaman pembuatan post
+ * Computed untuk mengecek apakah ada post yang tersedia
+ * berdasarkan filter yang aktif
  */
-const navigateToCreate = () => {
-  router.push({ name: 'post-create' })
+const noPostsAvailable = computed(() => {
+  if (showSaved.value) {
+    return postsStore.saved.length === 0
+  }
+  return postsStore.sorted.length === 0
+})
+
+/**
+ * Mengubah status filter post
+ */
+const toggleShowSaved = (value: boolean) => {
+  showSaved.value = value
 }
 </script>
 
 <template>
-  <div>
-    <!-- Header dengan judul dan filter -->
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
-      <!-- Judul halaman yang dinamis sesuai filter -->
-      <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
-        {{ postFilter === POST_FILTER_MODES.ALL ? 'Semua Post' : 'Post Tersimpan' }}
-      </h1>
+  <section>
+    <!-- Header halaman dengan judul dan filter -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+          {{ showSaved ? t('home.savedPosts') : t('home.allPosts') }}
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">
+          {{ showSaved ? t('home.savedPostsDescription') : t('home.allPostsDescription') }}
+        </p>
+      </div>
 
-      <!-- Filter dan tombol -->
-      <div class="flex gap-2">
-        <!-- Tombol tab filter -->
+      <div class="flex items-center gap-3">
+        <!-- Toggle untuk menampilkan semua post atau post yang disimpan -->
         <div
           class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-1 border border-gray-200 dark:border-gray-700"
         >
           <button
-            @click="postFilter = POST_FILTER_MODES.ALL"
+            @click="toggleShowSaved(false)"
             :class="[
               'px-4 py-2 text-sm font-medium rounded-md transition-colors',
-              postFilter === POST_FILTER_MODES.ALL
+              !showSaved
                 ? 'bg-indigo-600 text-white'
                 : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
             ]"
           >
-            Semua
+            {{ t('home.all') }}
           </button>
           <button
-            @click="postFilter = POST_FILTER_MODES.SAVED"
+            @click="toggleShowSaved(true)"
             :class="[
               'px-4 py-2 text-sm font-medium rounded-md transition-colors',
-              postFilter === POST_FILTER_MODES.SAVED
+              showSaved
                 ? 'bg-indigo-600 text-white'
                 : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
             ]"
           >
-            Tersimpan
+            {{ t('home.saved') }}
           </button>
         </div>
 
-        <!-- Tombol buat post baru (tampilan mobile) -->
-        <button
-          @click="navigateToCreate"
-          class="sm:hidden bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 rounded-lg py-2 transition-colors shadow-sm"
+        <!-- Tombol untuk membuat post baru -->
+        <RouterLink
+          to="/post-create"
+          class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:focus:ring-offset-gray-900 sm:w-auto w-full flex justify-center items-center gap-2"
         >
-          + Post
-        </button>
+          <span>{{ t('home.newPost') }}</span>
+        </RouterLink>
       </div>
     </div>
 
-    <!-- Menampilkan pesan kosong jika tidak ada post -->
-    <div v-if="noPostsAvailable" class="my-16">
-      <EmptyState
-        :message="
-          postFilter === POST_FILTER_MODES.ALL
-            ? 'Belum ada post yang dibuat'
-            : 'Belum ada post yang disimpan'
-        "
-        action="Buat Post Baru"
-        @action="navigateToCreate"
-      />
-    </div>
+    <!-- Tampilkan pesan jika tidak ada post -->
+    <EmptyState v-if="noPostsAvailable" :message="t('home.noPostsAvailable')" />
 
-    <!-- Menampilkan semua post jika filter = 'all' -->
-    <div
-      v-else-if="postFilter === POST_FILTER_MODES.ALL"
-      class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-    >
-      <div v-for="post in postsStore.sorted" :key="post.id" class="h-full">
-        <PostItem :post="post" />
-      </div>
+    <!-- Grid untuk menampilkan daftar post -->
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <PostItem v-for="post in posts" :key="post.id" :post="post" class="h-full" />
     </div>
-
-    <!-- Menampilkan post yang disimpan jika filter = 'saved' -->
-    <div v-else class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <div v-for="post in postsStore.saved" :key="post.id" class="h-full">
-        <PostItem :post="post" />
-      </div>
-    </div>
-  </div>
+  </section>
 </template>

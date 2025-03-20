@@ -1,12 +1,20 @@
 <script setup lang="ts">
 import { Info, Heart, Github, Mail } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
+
+/**
+ * Menggunakan fungsi useI18n untuk terjemahan
+ */
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="max-w-3xl mx-auto">
     <div class="mb-8 flex items-center gap-3">
       <Info class="h-6 w-6 text-indigo-600" />
-      <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Tentang Aplikasi</h1>
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
+        {{ t('about.title') }}
+      </h1>
     </div>
 
     <!-- Card utama dengan informasi tentang aplikasi -->
@@ -17,33 +25,35 @@ import { Info, Heart, Github, Mail } from 'lucide-vue-next'
         <!-- Deskripsi aplikasi -->
         <div class="space-y-4">
           <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
-            Post.it - Aplikasi CRUD Post
+            {{ t('about.appName') }}
           </h2>
 
           <p class="text-gray-600 dark:text-gray-300">
-            Post.it adalah aplikasi manajemen post sederhana yang dibangun dengan Vue 3, TypeScript,
-            dan Tailwind CSS. Aplikasi ini memungkinkan pengguna untuk membuat, membaca, mengedit,
-            dan menghapus post, serta menyimpan post favorit.
+            {{ t('about.description') }}
           </p>
 
           <div class="space-y-2">
-            <h3 class="text-lg font-medium text-gray-800 dark:text-white">Fitur Utama:</h3>
+            <h3 class="text-lg font-medium text-gray-800 dark:text-white">
+              {{ t('about.features.title') }}
+            </h3>
             <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300 space-y-1">
-              <li>Melihat semua post dengan tata letak responsif</li>
-              <li>Filter tampilan post (semua atau yang disimpan)</li>
-              <li>Menambahkan post baru dengan formulir validasi</li>
-              <li>Mengedit post yang sudah ada</li>
-              <li>Menghapus post yang tidak diperlukan</li>
-              <li>Menyimpan post favorit untuk akses mudah</li>
-              <li>Tampilan responsif untuk desktop dan mobile</li>
-              <li>Dukungan mode tema gelap (dark mode)</li>
+              <li>{{ t('about.features.list.responsiveLayout') }}</li>
+              <li>{{ t('about.features.list.filter') }}</li>
+              <li>{{ t('about.features.list.addPost') }}</li>
+              <li>{{ t('about.features.list.editPost') }}</li>
+              <li>{{ t('about.features.list.deletePost') }}</li>
+              <li>{{ t('about.features.list.savePost') }}</li>
+              <li>{{ t('about.features.list.responsiveDisplay') }}</li>
+              <li>{{ t('about.features.list.darkMode') }}</li>
             </ul>
           </div>
         </div>
 
         <!-- Teknologi yang digunakan -->
         <div class="space-y-2">
-          <h3 class="text-lg font-medium text-gray-800 dark:text-white">Teknologi:</h3>
+          <h3 class="text-lg font-medium text-gray-800 dark:text-white">
+            {{ t('about.tech.title') }}
+          </h3>
           <div class="flex flex-wrap gap-2">
             <span
               class="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-3 py-1 rounded-full text-sm"
@@ -78,7 +88,7 @@ import { Info, Heart, Github, Mail } from 'lucide-vue-next'
         >
           <div class="flex items-center text-gray-600 dark:text-gray-400">
             <Heart class="h-4 w-4 text-red-500 mr-2" />
-            <p>Dibuat dengan cinta untuk demonstrasi Vue.js dan TypeScript</p>
+            <p>{{ t('about.credits.madeWith') }}</p>
           </div>
 
           <div class="flex items-center gap-3">
@@ -89,14 +99,14 @@ import { Info, Heart, Github, Mail } from 'lucide-vue-next'
               class="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
             >
               <Github class="h-4 w-4" />
-              <span>Github</span>
+              <span>{{ t('about.credits.github') }}</span>
             </a>
             <a
               href="mailto:info@example.com"
               class="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
             >
               <Mail class="h-4 w-4" />
-              <span>Kontak</span>
+              <span>{{ t('about.credits.contact') }}</span>
             </a>
           </div>
         </div>

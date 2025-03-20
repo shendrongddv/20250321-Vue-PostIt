@@ -1,7 +1,14 @@
 <script setup lang="ts">
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import { Menu, X, PenSquare, Home, Info, Mail } from 'lucide-vue-next'
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
+
+/**
+ * Menggunakan fungsi useI18n untuk terjemahan
+ */
+const { t } = useI18n()
 
 /**
  * Mendapatkan rute aktif untuk penentuan active state menu
@@ -91,7 +98,7 @@ const closeMobileMenu = () => {
             @click="closeMobileMenu"
           >
             <Home class="h-4 w-4" />
-            <span>Beranda</span>
+            <span>{{ t('navigation.home') }}</span>
           </RouterLink>
 
           <!-- Link navigasi ke halaman about -->
@@ -105,7 +112,7 @@ const closeMobileMenu = () => {
             @click="closeMobileMenu"
           >
             <Info class="h-4 w-4" />
-            <span>Tentang</span>
+            <span>{{ t('navigation.about') }}</span>
           </RouterLink>
 
           <!-- Link navigasi ke halaman kontak -->
@@ -119,8 +126,13 @@ const closeMobileMenu = () => {
             @click="closeMobileMenu"
           >
             <Mail class="h-4 w-4" />
-            <span>Kontak</span>
+            <span>{{ t('navigation.contact') }}</span>
           </RouterLink>
+
+          <!-- Pemilih bahasa -->
+          <div class="ml-2">
+            <LanguageSwitcher />
+          </div>
 
           <!-- Link navigasi ke halaman pembuatan post baru -->
           <RouterLink
@@ -134,18 +146,23 @@ const closeMobileMenu = () => {
             @click="closeMobileMenu"
           >
             <PenSquare class="h-4 w-4" />
-            <span>Post Baru</span>
+            <span>{{ t('navigation.newPost') }}</span>
           </RouterLink>
         </div>
 
         <!-- Tombol menu mobile -->
-        <button
-          @click="toggleMobileMenu"
-          class="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-        >
-          <Menu v-if="!mobileMenuOpen" class="h-6 w-6" />
-          <X v-else class="h-6 w-6" />
-        </button>
+        <div class="md:hidden flex items-center gap-2">
+          <!-- Pemilih bahasa di mobile -->
+          <LanguageSwitcher />
+
+          <button
+            @click="toggleMobileMenu"
+            class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            <Menu v-if="!mobileMenuOpen" class="h-6 w-6" />
+            <X v-else class="h-6 w-6" />
+          </button>
+        </div>
       </nav>
 
       <!-- Menu mobile -->
@@ -164,7 +181,7 @@ const closeMobileMenu = () => {
         >
           <div class="flex items-center gap-3">
             <Home class="h-5 w-5" />
-            <span>Beranda</span>
+            <span>{{ t('navigation.home') }}</span>
           </div>
         </RouterLink>
 
@@ -179,7 +196,7 @@ const closeMobileMenu = () => {
         >
           <div class="flex items-center gap-3">
             <Info class="h-5 w-5" />
-            <span>Tentang</span>
+            <span>{{ t('navigation.about') }}</span>
           </div>
         </RouterLink>
 
@@ -194,7 +211,7 @@ const closeMobileMenu = () => {
         >
           <div class="flex items-center gap-3">
             <Mail class="h-5 w-5" />
-            <span>Kontak</span>
+            <span>{{ t('navigation.contact') }}</span>
           </div>
         </RouterLink>
 
@@ -209,7 +226,7 @@ const closeMobileMenu = () => {
           @click="closeMobileMenu"
         >
           <PenSquare class="h-5 w-5" />
-          <span>Post Baru</span>
+          <span>{{ t('navigation.newPost') }}</span>
         </RouterLink>
       </div>
     </div>
@@ -232,10 +249,7 @@ const closeMobileMenu = () => {
     class="py-6 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-200"
   >
     <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 dark:text-gray-400 text-sm">
-      <p>
-        © {{ new Date().getFullYear() }} Post.it - Dibuat dengan Vue 3, TypeScript, Pinia, Vue
-        Router, dan Tailwind CSS
-      </p>
+      <p v-html="t('footer.copyright', { year: new Date().getFullYear() })"></p>
     </div>
   </footer>
 </template>

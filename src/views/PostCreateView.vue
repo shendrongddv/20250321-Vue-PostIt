@@ -2,7 +2,13 @@
 import { usePostsStore } from '@/stores/posts'
 import { ArrowLeft, Loader2, Type, FileText, Send } from 'lucide-vue-next'
 import { computed, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+
+/**
+ * Menggunakan fungsi useI18n untuk terjemahan
+ */
+const { t } = useI18n()
 
 /**
  * Mendapatkan store posts untuk melakukan operasi penambahan post
@@ -73,11 +79,13 @@ const onSubmit = async () => {
       <button
         @click="goBack"
         class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-        title="Kembali ke halaman utama"
+        :title="t('post.form.goBack')"
       >
         <ArrowLeft class="h-5 w-5 text-gray-600 dark:text-gray-300" />
       </button>
-      <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Buat Post Baru</h1>
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
+        {{ t('post.create.title') }}
+      </h1>
     </div>
 
     <!-- Card utama dengan form -->
@@ -87,10 +95,11 @@ const onSubmit = async () => {
       <div class="p-6 space-y-6">
         <!-- Deskripsi form -->
         <div class="space-y-2">
-          <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Tambahkan Post Baru</h2>
+          <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+            {{ t('post.create.heading') }}
+          </h2>
           <p class="text-gray-600 dark:text-gray-300">
-            Bagikan pemikiran Anda dengan pembaca kami. Tuliskan judul yang menarik dan konten yang
-            informatif.
+            {{ t('post.create.description') }}
           </p>
         </div>
 
@@ -99,7 +108,7 @@ const onSubmit = async () => {
           <!-- Input judul post -->
           <div class="space-y-2">
             <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Judul Post
+              {{ t('post.form.titleLabel') }}
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -110,7 +119,7 @@ const onSubmit = async () => {
                 type="text"
                 v-model="post.title"
                 required
-                placeholder="Masukkan judul post yang menarik..."
+                :placeholder="t('post.form.titlePlaceholder')"
                 class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 focus:border-transparent transition-colors outline-none"
                 :disabled="isSubmitting"
               />
@@ -120,7 +129,7 @@ const onSubmit = async () => {
           <!-- Input isi post -->
           <div class="space-y-2">
             <label for="body" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Isi Post
+              {{ t('post.form.contentLabel') }}
             </label>
             <div class="relative">
               <div class="absolute top-3 left-3 pointer-events-none">
@@ -131,7 +140,7 @@ const onSubmit = async () => {
                 v-model="post.body"
                 rows="8"
                 required
-                placeholder="Tulis isi post disini..."
+                :placeholder="t('post.form.contentPlaceholder')"
                 class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 focus:border-transparent transition-colors outline-none resize-y"
                 :disabled="isSubmitting"
               ></textarea>
@@ -147,7 +156,7 @@ const onSubmit = async () => {
               class="px-5 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium text-sm transition-colors"
               :disabled="isSubmitting"
             >
-              Batal
+              {{ t('post.form.cancel') }}
             </button>
 
             <!-- Tombol submit dengan loading state -->
@@ -163,7 +172,7 @@ const onSubmit = async () => {
             >
               <Loader2 v-if="isSubmitting" class="h-4 w-4 mr-2 animate-spin" />
               <Send v-else class="h-4 w-4 mr-2" />
-              {{ isSubmitting ? 'Menyimpan...' : 'Simpan Post' }}
+              {{ isSubmitting ? t('post.form.saving') : t('post.form.save') }}
             </button>
           </div>
         </form>

@@ -2,7 +2,13 @@
 import { usePostsStore } from '@/stores/posts'
 import type { Post } from '@/types/post'
 import { Bookmark, BookmarkCheck, Pencil, Trash } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+
+/**
+ * Menggunakan fungsi useI18n untuk terjemahan
+ */
+const { t } = useI18n()
 
 /**
  * Mendapatkan router untuk navigasi ke halaman edit
@@ -70,7 +76,7 @@ const handleEdit = (id: number) => {
         class="text-xs font-medium text-indigo-600 dark:text-indigo-400 flex items-center"
       >
         <BookmarkCheck class="h-3.5 w-3.5 mr-1" />
-        Disimpan
+        {{ t('post.actions.saved') }}
       </div>
       <div v-else class="w-3.5 h-3.5"></div>
 
@@ -80,7 +86,7 @@ const handleEdit = (id: number) => {
         <button
           @click="postStore.deletePost(post.id)"
           class="p-1.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-red-100 dark:hover:bg-red-900/20 hover:text-red-500 dark:hover:text-red-400 transition-colors"
-          title="Hapus post"
+          :title="t('post.actions.delete')"
         >
           <Trash class="h-4 w-4" />
         </button>
@@ -89,7 +95,7 @@ const handleEdit = (id: number) => {
         <button
           @click="handleEdit(post.id)"
           class="p-1.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-amber-100 dark:hover:bg-amber-900/20 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
-          title="Edit post"
+          :title="t('post.actions.edit')"
         >
           <Pencil class="h-4 w-4" />
         </button>
@@ -98,7 +104,7 @@ const handleEdit = (id: number) => {
         <button
           @click="postStore.savePost(post.id)"
           class="p-1.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/20 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors"
-          :title="post.is_saved ? 'Batal simpan post' : 'Simpan post'"
+          :title="post.is_saved ? t('post.actions.unsave') : t('post.actions.save')"
         >
           <component :is="post.is_saved ? BookmarkCheck : Bookmark" class="h-4 w-4" />
         </button>
