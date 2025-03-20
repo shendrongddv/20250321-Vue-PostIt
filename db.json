@@ -1,0 +1,36 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "The Future of Artificial Intelligence in Daily Life",
+      "body": "Artificial intelligence is transforming the way we live, work, and interact. From automation to decision-making, AI continues to shape the future of technology worldwide.",
+      "author": "John Doe",
+      "created_at": "3/18/2025",
+      "is_saved": true
+    },
+    {
+      "id": 2,
+      "title": "Sustainable Energy: The Key to a Greener Planet",
+      "body": "Renewable energy sources such as solar, wind, and hydro are crucial for reducing carbon emissions. The future depends on sustainable choices to protect our environment globally.",
+      "author": "Jane Smith",
+      "created_at": "3/20/2025",
+      "is_saved": false
+    },
+    {
+      "id": 3,
+      "title": "The Rise of Remote Work and Digital Nomads",
+      "body": "With technology advancing, more companies embrace remote work. Digital nomads are growing, enjoying flexible schedules while maintaining productivity through virtual collaboration tools worldwide.",
+      "author": "Michael Johnson",
+      "created_at": "3/18/2025",
+      "is_saved": true
+    },
+    {
+      "id": 4,
+      "title": "Cybersecurity Challenges in an Increasingly Digital World",
+      "body": "As cyber threats grow, companies must enhance security measures. Protecting sensitive data and personal information remains critical in today's interconnected digital landscape globally.",
+      "author": "Emily Davis",
+      "created_at": "3/15/2025",
+      "is_saved": false
+    }
+  ]
+}
